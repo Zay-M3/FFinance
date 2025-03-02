@@ -1,0 +1,74 @@
+
+    <div style="padding: 10px;">
+        <div  class="card" style="width: 18rem; width: 400px ; height: 353px; ">
+            <div class="card-body">
+                {% if longNameActive != 'No found' %}
+                    <h2 class="card-title">{{ longNameActive }}</h2>
+                    <h6 class="card-subtitle mb-2 text-body-secondary"> {{ simbolActive }}</h6>
+
+                    <a style="outline: none; text-decoration: none;" data-bs-toggle="tooltip" data-bs-top="top"
+                    title="{{ infoCompany }}" class="d-inline-flex gap-1">Look information of the company of Crypto</a>
+                    <br>
+                    <div class="d-flex justify-content-between aling-items-center ">
+                        <h6>Price of action</h6>
+                        <h6>{{ priceActive }}$</h6>
+                    </div>
+                    <div class="d-flex justify-content-between aling-items-center ">
+                        <h6>Objetive</h6>
+                        <h6>{{ objetiveActive }}$</h6>
+                    </div>
+                    <div class="d-flex justify-content-between aling-items-center ">
+                        <h6>Diference-Objetive</h6>
+                        {% if diferenceActive > 0 %}
+                            <h6>{{ diferenceActive }}$</h6>
+                        {% else %}
+                            <h6>Success <i class="fa-solid fa-check"></i></h6>
+                        {% endif %}
+                    </div>
+                    <br>
+                    {% if diferenceActive > 0 %}
+                        <h6 style="opacity: 60%; font-size: 14;"> Here you can assign an alert when the asset reaches your target </h6>
+                        <br>
+                        <div class="container">
+                            <div class="row">
+                                <button class="btn btn-warning col text-end">Set notification <i class="fa-solid fa-bell"></i></button>
+                            </div>
+                        </div>
+                    {% else %}
+                        <h6 style="opacity: 60%; font-size: 14;"> If you see this, you have probably already reached your goal or the difference is 0 or less.</h6>
+                    {% endif %}
+                {% else %}
+                    <div class="toast-contaier">
+                        <div id="tostadForError" class="toast" role="alert">
+                            <div class="toast-header">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <strong class="me-auto">No Found</strong>
+                                <small>Just Now</small>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+
+                            </div>
+                            <div class="toast-body">
+                                This active or cryto do not exist!
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}      
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const toasTrigger = document.getElementById('tostadForErrorBtn')
+        const toastLiveTrigger = document.getElementById('tostadForError')
+
+        if (toasTrigger) {
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveTrigger)
+            toasTrigger.addEventListener('click', () => {
+                toastBootstrap.show()
+            })
+        }
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>

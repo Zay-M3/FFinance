@@ -1,0 +1,56 @@
+<form id="fotPuta" action="{% url 'home' %}" method="post">
+    {% csrf_token  %}
+    <div style="padding: 10px;">
+        <div  class="card" style="width: 18rem; width: 400px ; height: 353px; ">
+            <div class="card-body">
+                <h2 class="card-title">Active</h2>
+                <h6 style="opacity: 60%; font-size: 19px" class="card-subtitle mb-2 text-body-secondary">Select your Active</h6>
+                <p style="opacity: 70%; font-size: 16px;" class="card-text">Here your can select your active and objetive for shearding</p>
+
+                <select style="width: 250px;" class="form-select" aria-label="Default select example" name="simbolActive" id="select">
+                    <option selected>Select your active</option>
+                    <option value="BTC-USD">BitCoin</option>
+                    <option value="TSLA">Tesla</option>
+                    <option value="AMZN">Amazon</option>
+                    <option value="TLSA">Tiziana</option>
+                    <option value="GOOG">Google Alphabet</option>
+                    <option value="AAPL">Apple</option>
+                </select>
+                <br>
+
+                <label style="padding-top: 10px; font-size: 16px;" for="customRange1" class="form-label">Select your objetive</label>
+                <div class="d-flex">
+                    <p style="padding-right: 2px;" class="mt-2">0</p> 
+                    <input style="width: 360px;" type="range" name="objetiveActive" class="form-range" min="0" max="1000000" id="customRange1" value="0" oninput="updateValue(this.value)">
+                    <p style="padding-left: 5px;" class="mt-2"><span id="rangeValue">0</span></p> 
+                    <br>
+                        
+                </div>
+                <div class="d-flex justify-content-between aling-items-center">
+                    <label for="objetiveActive" style="opacity: 70%; font-size: 16px;">Objetive</label>
+                    <input class="mt-center" type="text" style="padding-right: 5px; width: 250px; height: 25px;" name ="objetiveActive" id="myInput" placeholder="put your number here also..." oninput="changeSpan()">
+                </div>
+
+                <div style="padding-top: 2px;" class=""> 
+                    <button id="tostadForErrorBtn" style=" width: 360px;" class="btn btn-success mt-auto">Send  <i class="fa-solid fa-magnifying-glass"></i></i></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    function updateValue(val){
+        document.getElementById('rangeValue').textContent = val
+
+    }
+    function changeSpan(){
+            document.getElementById('rangeValue').innerText = document.getElementById('myInput').value
+        }
+    const observer = new MutationObserver(() => {
+        document.getElementById('myInput').value = document.getElementById('rangeValue').innerText
+    })
+
+    
+    observer.observe(document.getElementById('rangeValue'), {childList:true, characterData:true, subtree:true})
+</script>

@@ -1,0 +1,16 @@
+<div style="padding: 10px;">
+    <div class="card" style="width: 18rem; width: 600px; height: 353px;">
+        <div class="card-body">
+            <h2 class="card-title">{{ longNameActive }}</h2>
+            <h6 id="nameOfsimbol" style="opacity: 60%;" class="card-subtitle text-body-secondary">{{ simbolActive }}</h6>
+            <form action="{% url 'get_char' %}" method="get">
+                <div class="row">
+                    <div class="col">
+                        <div style="min-height: 320px;" id="chart" class="chart"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
