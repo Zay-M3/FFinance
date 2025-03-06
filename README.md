@@ -1,6 +1,6 @@
 # FFinance: Your Free Real-Time Stock Market Companion
 
-![FFinance Logo](https://via.placeholder.com/150x150?text=FFinance+Logo)  <!-- Replace with your actual logo -->
+<img src="app/static/app/icon.svg" width="50" height="50"/>
 
 ## Introduction
 
@@ -20,7 +20,7 @@ FFinance offers a range of powerful features to enhance your stock market experi
 
 2.  **Customizable Investment Goals:**
     *   **Objective Setting:** Define a target price for any stock you're tracking. FFinance will actively monitor the stock's price and notify you.
-    * **Objetive Alert**: You will see a message if the stock exceeds your goal.
+    * **Objetive Alert**: (Soon).
 
 3.  **Historical Price Charts:**
     *   **Daily Price History:** View a detailed line chart illustrating the stock's price fluctuations over the past five days.
@@ -31,7 +31,6 @@ FFinance offers a range of powerful features to enhance your stock market experi
 ## How to Use FFinance
 
 Using FFinance is straightforward and intuitive:
-
 1.  **Enter a Stock Symbol:** In the search bar, type in the stock symbol of the company you want to track.
 2.  **Set Your Objective:** Enter your target price in the "Objective" field.
 3. **Press the Button**: Click on the button to get the information and the graph.
@@ -43,6 +42,31 @@ Using FFinance is straightforward and intuitive:
 ## Technologies Used
 
 FFinance leverages a robust and modern technology stack:
+<h3>Backend</h3>
+<div style="display-flex">
+   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" width="50" height="50"/>
+   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" width="50" height="50"/>
+</div>
+
+
+<h3>Frontend</h3>
+<div style="display-flex">
+   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" width="50" height="50"/>
+   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" width="50" height="50"/>
+   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="50" height="50"/>
+</div>
+
+
+<h3>Graphis</h3>
+<div style="display-flex">
+   <img src="https://echarts.apache.org/en/images/logo.png" width="200" height="50"/>
+</div>
+<h3>Comunication</h3>
+<div style="display-flex">
+   <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" width="50" height="50"/>
+   <img src="https://raw.githubusercontent.com/github/explore/main/topics/json/json.png" width="50" height="50"/>
+</div>
+
 
 *   **Python:** The backend logic of FFinance is powered by Python, a versatile and widely-used programming language.
 *   **Django:** The Django web framework provides a clean and efficient way to build web applications with Python.
