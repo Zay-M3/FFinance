@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Welcome to FFinance, a non-profit web application designed to empower you with real-time insights into the dynamic world of the stock market. Whether you're a seasoned investor or just starting your financial journey, FFinance provides valuable tools to track stock performance, set investment goals, and monitor historical trends, all absolutely free of charge.
+Welcome to FFinance, a web application designed to provide you with real-world insights into the dynamic world of the stock market. FFinance offers you tools to monitor stock performance, set investment goals, and track historical trends—all completely free.
 
 FFinance is built with a passion for making financial data accessible and understandable to everyone. We believe that knowledge is the key to successful investing, and our platform is here to equip you with the information you need to make informed decisions.
 
