@@ -63,7 +63,6 @@ FFinance leverages a robust and modern technology stack:
 </div>
 <h3>Comunication</h3>
 <div style="display-flex">
-   <img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" width="50" height="50"/>
    <img src="https://raw.githubusercontent.com/github/explore/main/topics/json/json.png" width="50" height="50"/>
 </div>
 
