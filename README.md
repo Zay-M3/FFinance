@@ -1,5 +1,7 @@
 # FFinance: Your Free Real-Time Stock Market Companion
 
+Here you can see a demo for FFninance desploy in railway = https://ffinance-production.up.railway.app/
+
 <img src="app/static/app/icon.svg" width="50" height="50"/>
 
 ## Introduction
