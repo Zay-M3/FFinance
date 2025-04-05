@@ -1,2 +1,2 @@
 
-web : python manage.py collectstatic && unicorn core.wsgi
+web : python manage.py collectstatic --noinput && unicorn core.wsgi
