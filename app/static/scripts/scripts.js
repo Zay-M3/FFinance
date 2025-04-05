@@ -19,9 +19,9 @@
     const initChart = async() => {
 
         try{
-            
-            const url1 = "http://127.0.0.1:8000/get_char/"
-            const url2 = "http://127.0.0.1:8000/get_char2/"
+            const baseUrl = window.location.origin;
+            const url1 = `${baseUrl}/get_char/`;
+            const url2 = `${baseUrl}/get_char2/`;
             
             const chartData = await getOptionChart(url1);
             const chartData2 = await getOptionChart(url2);
