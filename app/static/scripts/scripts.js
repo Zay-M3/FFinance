@@ -11,7 +11,8 @@
             
             return await response.json()
         } catch (ex) {
-            alert(ex)
+            console.log(ex);
+            
         }
     }
 
@@ -34,8 +35,6 @@
             myChart2.resize()
         } catch (ex){
             console.log(ex);
-            alert(ex)   
-            alert("Error al inicializar el gráfico");
         }
         
     }
