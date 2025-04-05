@@ -69,6 +69,6 @@ Desktop.ini
 app/static/collected/
 app/static/admin/
 
-
+staticfiles/
 # logs
 *.log

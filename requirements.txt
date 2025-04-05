@@ -10,14 +10,11 @@ psycopg2-binary==2.9.9  # Añade esta línea si usas PostgreSQL
 # Servidor para producción
 gunicorn==23.0.0
 
-# Canales (si usas websockets)
-channels==4.2.0  # Solo si es necesario
+
 
 # Dependencias de tu proyecto
 requests==2.32.3
 pandas==2.2.3
 yfinance==0.2.54
 numpy==2.2.3  # Requerido por pandas
-
-# Manejo de archivos estáticos (opcional pero recomendado)
-whitenoise==6.6.0
+whitenoise==6.9.0
