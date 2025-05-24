@@ -1,0 +1,93 @@
+{% load static %}
+<!-- Modal Acerca de FFinance -->
+<div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-gradient" style="background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));">
+        <div class="d-flex align-items-center">
+          <img src="{% static 'app/iconforhome.svg' %}" alt="FFinance Logo" width="40" class="me-2">
+          <h5 class="modal-title text-white" id="aboutModalLabel">Acerca de FFinance</h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-4">
+          <div class="col-12">
+            <h4 class="border-bottom pb-2">Tu compañero gratuito para el mercado bursátil en tiempo real</h4>
+            <p class="lead">
+              FFinance es una aplicación web diseñada para proporcionarte información detallada sobre el dinámico mundo del mercado de valores. Ofrece herramientas para monitorear el rendimiento de las acciones, establecer objetivos de inversión y seguir tendencias históricas, todo completamente gratis.
+            </p>
+          </div>
+        </div>
+        
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h5><i class="fas fa-chart-line me-2 text-primary"></i>Características principales</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Seguimiento en tiempo real:</strong> Busca por símbolo bursátil y obtén precios actualizados</li>
+              <li class="list-group-item"><strong>Objetivos personalizables:</strong> Define un precio objetivo para cualquier acción</li>
+              <li class="list-group-item"><strong>Gráficos históricos:</strong> Visualiza el rendimiento con gráficos diarios y mensuales</li>
+              <li class="list-group-item"><strong>Información detallada:</strong> Accede a descripciones completas de las empresas</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h5><i class="fas fa-code me-2 text-primary"></i>Tecnologías utilizadas</h5>
+            <div class="row text-center g-2">
+              <div class="col-4">
+                <div class="p-3 border rounded mb-2">
+                  <i class="fab fa-python fa-2x"></i>
+                  <p class="mb-0">Python</p>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-3 border rounded mb-2">
+                  <i class="fab fa-js-square fa-2x"></i>
+                  <p class="mb-0">JavaScript</p>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-3 border rounded mb-2">
+                  <i class="fab fa-html5 fa-2x"></i>
+                  <p class="mb-0">HTML5</p>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-3 border rounded mb-2">
+                  <i class="fab fa-css3-alt fa-2x"></i>
+                  <p class="mb-0">CSS3</p>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-3 border rounded mb-2">
+                  <i class="fab fa-bootstrap fa-2x"></i>
+                  <p class="mb-0">Bootstrap</p>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-3 border rounded">
+                  <i class="fas fa-server fa-2x"></i>
+                  <p class="mb-0">Django</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <h5><i class="fas fa-info-circle me-2 text-primary"></i>Descargo de responsabilidad</h5>
+            <div class="alert alert-warning">
+              FFinance está destinado únicamente a fines informativos y no debe considerarse como asesoramiento financiero. Invertir en el mercado de valores conlleva riesgos, y siempre debes consultar con un asesor financiero calificado antes de tomar decisiones de inversión.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="https://github.com/Zay-M3" target="_blank" class="btn btn-outline-secondary">
+          <i class="fab fa-github me-2"></i>Ver en GitHub
+        </a>
+        <button type="button" class="btn finance-btn finance-btn-success" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

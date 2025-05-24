@@ -1,74 +1,146 @@
 
-    <div style="padding: 10px;">
-        <div  class="card" style="width: 18rem; width: 400px ; height: 353px; ">
-            <div class="card-body">
-                {% if longNameActive != 'No found' %}
-                    <h2 class="card-title">{{ longNameActive }}</h2>
-                    <h6 class="card-subtitle mb-2 text-body-secondary"> {{ simbolActive }}</h6>
-
-                    <a style="outline: none; text-decoration: none;" data-bs-toggle="tooltip" data-bs-top="top"
-                    title="{{ infoCompany }}" class="d-inline-flex gap-1">Look information of the company of Crypto</a>
-                    <br>
-                    <div class="d-flex justify-content-between aling-items-center ">
-                        <h6>Price of action</h6>
-                        <h6>{{ priceActive }}$</h6>
+    {% load static %}
+<div class="finance-card card h-100 result-card">
+    <div class="card-body d-flex flex-column">
+        {% if longNameActive != 'No found' %}
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <h2 class="card-title mb-1" id="longNameActive">{{ longNameActive }}</h2>
+                    <div class="d-flex align-items-center">
+                        <h6 class="card-subtitle text-muted mb-0 me-2" id="nameOfsimbol">{{ simbolActive }}</h6>
+                        <span class="badge {% if priceActive > objetiveActive %}bg-success{% else %}bg-primary{% endif %}">
+                            {% if priceActive > objetiveActive %}Superado{% else %}En seguimiento{% endif %}
+                        </span>
                     </div>
-                    <div class="d-flex justify-content-between aling-items-center ">
-                        <h6>Objetive</h6>
-                        <h6>{{ objetiveActive }}$</h6>
-                    </div>
-                    <div class="d-flex justify-content-between aling-items-center ">
-                        <h6>Diference-Objetive</h6>
-                        {% if diferenceActive > 0 %}
-                            <h6>{{ diferenceActive }}$</h6>
-                        {% else %}
-                            <h6>Success <i class="fa-solid fa-check"></i></h6>
-                        {% endif %}
-                    </div>
-                    <br>
-                    {% if diferenceActive > 0 %}
-                        <h6 style="opacity: 60%; font-size: 14;"> Here you can assign an alert when the asset reaches your target </h6>
-                        <br>
-                        <div class="container">
-                            <div class="row">
-                                <button class="btn btn-warning col text-end">Set notification <i class="fa-solid fa-bell"></i></button>
-                            </div>
-                        </div>
-                    {% else %}
-                        <h6 style="opacity: 60%; font-size: 14;"> If you see this, you have probably already reached your goal or the difference is 0 or less.</h6>
-                    {% endif %}
-                {% else %}
-                    <div class="toast-contaier">
-                        <div id="tostadForError" class="toast" role="alert">
-                            <div class="toast-header">
-                                <i class="fa-solid fa-triangle-exclamation"></i>
-                                <strong class="me-auto">No Found</strong>
-                                <small>Just Now</small>
-                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-
-                            </div>
-                            <div class="toast-body">
-                                This active or cryto do not exist!
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}      
-
+                </div>
+                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal">
+                    <i class="fas fa-info-circle"></i>
+                </button>
             </div>
-        </div>
+            
+            <!-- Información oculta para ser usada por el modal -->
+            <div class="d-none">
+                <span id="infoCompany">{{ infoCompany }}</span>
+                <span id="priceActive">{{ priceActive }}</span>
+                <span id="objetiveActive">{{ objetiveActive }}</span>
+                <span id="diferenceActive">{{ diferenceActive }}</span>
+            </div>
+            
+            <div class="price-overview mb-4">
+                <div class="row g-2">
+                    <div class="col-4">
+                        <div class="price-card">
+                            <div class="price-card-value">{{ priceActive }}$</div>
+                            <div class="price-card-label">Precio actual</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="price-card">
+                            <div class="price-card-value">{{ objetiveActive }}$</div>
+                            <div class="price-card-label">Objetivo</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="price-card {% if diferenceActive > 0 %}price-card-neutral{% else %}price-card-success{% endif %}">
+                            <div class="price-card-value">{% if diferenceActive > 0 %}{{ diferenceActive }}${% else %}0${% endif %}</div>
+                            <div class="price-card-label">Diferencia</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="progress-container mb-4">                <div class="d-flex justify-content-between mb-2">
+                    <small>Progreso hacia objetivo</small>
+                    <small>                        {% if diferenceActive <= 0 %}
+                            <i class="fas fa-check-circle text-success"></i> 100%
+                        {% else %}
+                            <i class="fas fa-bullseye text-primary"></i> 
+                            {% widthratio priceActive objetiveActive 100 %}%
+                        {% endif %}
+                    </small>
+                </div>
+                
+                <div class="progress" style="height: 8px;">                    {% if diferenceActive <= 0 %}
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    {% else %}
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: {% widthratio priceActive objetiveActive 100 %}%" aria-valuenow="{% widthratio priceActive objetiveActive 100 %}" aria-valuemin="0" aria-valuemax="100"></div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="company-summary mb-3">
+                <h6 class="mb-2"><i class="fas fa-building text-muted me-2"></i>Resumen</h6>
+                <p class="small text-muted company-description">
+                    {% if infoCompany != 'No found' and infoCompany != 'NA' %}
+                        {{ infoCompany|truncatechars:180 }}
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#infoModal">Leer más</a>
+                    {% else %}
+                        No hay información disponible para este activo.
+                    {% endif %}
+                </p>
+            </div>
+            
+            <div class="mt-auto">
+                {% if diferenceActive > 0 %}
+                    <div class="d-grid gap-2">
+                        <button class="btn finance-btn finance-btn-warning" data-bs-toggle="tooltip" title="Recibir alertas cuando el precio alcance tu objetivo">
+                            <i class="fas fa-bell me-2"></i> Configurar alerta
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" id="shareButton">
+                            <i class="fas fa-share-alt me-2"></i> Compartir análisis
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="achievement-card">
+                        <div class="achievement-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="achievement-content">
+                            <h5 class="mb-1">¡Objetivo alcanzado!</h5>
+                            <p class="mb-2">Has alcanzado o superado tu precio objetivo.</p>
+                            <button class="btn btn-sm btn-success" id="celebrateButton">
+                                <i class="fas fa-glass-cheers me-1"></i> ¡Celebrar!
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="toast-container position-absolute p-3 top-0 end-0">
+                <div id="tostadForError" class="finance-toast toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="finance-toast-header toast-header">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong class="me-auto">No encontrado</strong>
+                        <small>Ahora</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        Este activo o criptomoneda no existe.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center py-5">
+                <i class="fas fa-search fa-3x mb-3 text-muted"></i>
+                <h3>Sin resultados</h3>
+                <p class="text-muted">Selecciona un activo para ver su análisis</p>
+            </div>
+        {% endif %}
     </div>
+</div>
 
-    <script>
-        const toasTrigger = document.getElementById('tostadForErrorBtn')
-        const toastLiveTrigger = document.getElementById('tostadForError')
-
-        if (toasTrigger) {
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveTrigger)
-            toasTrigger.addEventListener('click', () => {
-                toastBootstrap.show()
-            })
-        }
-
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-    </script>
+<script>
+    const toastTrigger = document.getElementById('tostadForErrorBtn');
+    const toastLiveElement = document.getElementById('tostadForError');
+    
+    if (toastTrigger) {
+        const toastBootstrap = new bootstrap.Toast(toastLiveElement);
+        toastTrigger.addEventListener('click', () => {
+            toastBootstrap.show();
+        });
+    }
+    
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+</script>

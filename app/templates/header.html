@@ -1,11 +1,29 @@
 {% load static %}
-    <header >
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a style="font-size: 30px; padding: 20px; font-weight: bold;" class="navbar-brand" href="#">
-                <img src="{% static 'app/iconforhome.svg' %}" width="70px" alt="Icono">FFinance</a>
-            
-        </nav>
-    </header>
+<header class="sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="{% static 'app/iconforhome.svg' %}" width="40" alt="FFinance Logo" class="me-2">
+                <span>FFinance</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/"><i class="fas fa-home me-1"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">
+                            <i class="fas fa-info-circle me-1"></i> Acerca de
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
 
 
 

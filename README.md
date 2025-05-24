@@ -22,13 +22,55 @@ FFinance offers a range of powerful features to enhance your stock market experi
 
 2.  **Customizable Investment Goals:**
     *   **Objective Setting:** Define a target price for any stock you're tracking. FFinance will actively monitor the stock's price and notify you.
-    * **Objetive Alert**: (Soon).
+    *   **Smart Price Suggestions:** Get intelligent price objective suggestions based on the selected asset.
+    *   **Visual Price Slider:** Easily set your price objectives with an interactive visual slider.
+    *   **Quick Price Options:** Select common price points with one click using quick price buttons.
+    *   **Achievement Celebrations:** Get visual celebrations when your price objectives are met.
 
 3.  **Historical Price Charts:**
     *   **Daily Price History:** View a detailed line chart illustrating the stock's price fluctuations over the past five days.
     *   **Monthly Bar History**: Get the performance of the stock in the last month in a bar chart
     *   **Visual Data:**  Gain a clearer understanding of the stock's recent performance through easy-to-read visualizations.
-    * **Compare:** You can see the graph of the active and compair it with other stock.
+    *   **Compare:** You can see the graph of the active and compair it with other stock.
+
+4.  **Enhanced User Experience:**
+    *   **Recent Searches:** Access your recent searches to quickly return to previously analyzed assets.
+    *   **Categorized Assets:** Assets are organized by categories for easier selection.
+    *   **Sharing Capabilities:** Share your analysis with others through social media or messaging apps.
+    *   **Visual Progress Tracking:** See your progress toward price objectives with animated progress bars.
+    *   **Responsive Notifications:** Get beautiful toast notifications for important events and actions.
+    *   **Watchlist Feature:** Add assets to your personal watchlist for quick access and monitoring.
+
+## UI/UX Improvements
+
+FFinance has been enhanced with a modern and intuitive user interface to make your financial analysis experience more enjoyable:
+
+### Asset Search Card Improvements
+- **Categorized Dropdown Menu:** Assets are now organized by categories like Cryptocurrencies, Technology, and Others for easier selection.
+- **Enhanced Price Objective Setter:** A visual slider with real-time feedback makes setting price objectives more intuitive.
+- **Quick Price Selection:** One-click buttons for common price points (e.g., $10, $100, $1K, $10K).
+- **Intelligent Price Suggestions:** The "Suggest" button automatically recommends a target price based on the selected asset's characteristics.
+- **Recent Searches History:** Quickly access your recent analyses with the built-in search history feature.
+
+### Results Card Enhancements
+- **Visual Price Cards:** Clearly presented price information with visual feedback.
+- **Animated Progress Bar:** Visual representation of your progress toward the set price objective.
+- **Achievement Celebrations:** Special visual effects and confetti animation when objectives are met.
+- **Company Summary:** Concise information about the company with an option to read more.
+- **Sharing Options:** Share your analysis via social media, messaging apps, or copy to clipboard.
+
+### General UI Improvements
+- **Toast Notifications:** Beautiful toast notifications provide feedback on user actions.
+- **Responsive Design:** The interface adapts seamlessly to different screen sizes and devices.
+- **Visual Feedback:** Hover effects, animations, and transitions create a more dynamic experience.
+- **Modal Information:** Detailed information is presented in modals with rich visual elements.
+- **Interactive Elements:** Buttons, sliders, and other interface elements provide visual feedback when interacted with.
+
+### Accessibility Features
+- **Tooltips:** Helpful tooltips provide additional context for various interface elements.
+- **High Contrast Elements:** Important information is presented with adequate contrast for better readability.
+- **Keyboard Navigation:** All features are accessible via keyboard navigation.
+- **Screen Reader Support:** Appropriate ARIA labels and roles for screen reader compatibility.
 
 ## How to Use FFinance
 
@@ -68,14 +110,23 @@ FFinance leverages a robust and modern technology stack:
    <img src="https://raw.githubusercontent.com/github/explore/main/topics/json/json.png" width="50" height="50"/>
 </div>
 
+<h3>UI/UX Components</h3>
+<div style="display-flex">
+   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" width="50" height="50"/>
+   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" width="50" height="50"/>
+   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="50" height="50"/>
+   <img src="https://fontawesome.com/images/favicon/icon-solid-512.png" width="50" height="50"/>
+</div>
 
 *   **Python:** The backend logic of FFinance is powered by Python, a versatile and widely-used programming language.
 *   **Django:** The Django web framework provides a clean and efficient way to build web applications with Python.
 *   **yfinance:** This popular library allows us to access real-time and historical stock market data from Yahoo Finance.
 *   **HTML, CSS, JavaScript:** The user interface is built using the fundamental web technologies of HTML for structure, CSS for styling, and JavaScript for interactive elements and dynamic data updates.
-* **Echart**: to create the graphs on the page.
-*   **REST API:** To communicate in a fast way with the backend
-* **Json**: To pass data between the backend and the frontend
+*   **Bootstrap:** The responsive UI components are built using Bootstrap, providing a consistent and modern look and feel.
+*   **Font Awesome:** Icons from Font Awesome enhance the visual experience and improve usability.
+*   **ECharts:** For creating interactive and responsive charts that visualize financial data.
+*   **REST API:** To communicate in a fast way with the backend.
+*   **Json:** To pass data between the backend and the frontend.
 
 ## Getting Started (For Developers)
 

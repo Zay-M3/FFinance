@@ -1,0 +1,322 @@
+{% load static %}
+<!-- Modal de Información de Activo -->
+<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-gradient" style="background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-info-circle text-white me-2"></i>
+          <h5 class="modal-title text-white" id="infoModalLabel">Información del Activo: <span id="modalActiveSymbol"></span></h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-4">
+          <div class="col-12">
+            <h4 class="border-bottom pb-2" id="modalActiveName"></h4>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5>Precio actual: <span class="badge bg-primary" id="modalActivePrice"></span></h5>
+              <h5>Objetivo: <span class="badge bg-info" id="modalActiveObjective"></span></h5>
+            </div>
+            <div class="alert" id="modalAlertDifference">
+              <span id="modalActiveDifference"></span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row mb-4">
+          <div class="col-12">
+            <h5><i class="fas fa-building me-2 text-primary"></i>Perfil de la empresa</h5>
+            <div class="card">
+              <div class="card-body">
+                <p id="modalActiveDescription"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h5><i class="fas fa-chart-line me-2 text-primary"></i>Datos de los últimos 5 días</h5>
+            <div id="modalMiniChart" style="height: 200px;"></div>
+          </div>
+          <div class="col-md-6">
+            <h5><i class="fas fa-history me-2 text-primary"></i>Rendimiento histórico</h5>
+            <ul class="list-group list-group-flush" id="modalHistoricalData">
+              <!-- Se insertará dinámicamente -->
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-2"></i>Cerrar
+        </button>
+        <button type="button" class="btn finance-btn finance-btn-success" id="btnAddToWatchlist">
+          <i class="fas fa-plus me-2"></i>Añadir a seguimientos
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Script para el modal de información de activo
+document.addEventListener('DOMContentLoaded', function() {
+    const infoModal = document.getElementById('infoModal');
+    
+    if (infoModal) {
+        infoModal.addEventListener('show.bs.modal', function(event) {
+            // Obtener datos del activo
+            const symbol = document.getElementById('nameOfsimbol')?.textContent || '';
+            const name = document.getElementById('longNameActive')?.textContent || '';
+            const description = document.getElementById('infoCompany')?.textContent || 'No hay información disponible para este activo.';
+            const currentPrice = document.getElementById('priceActive')?.textContent || '0';
+            const objective = document.getElementById('objetiveActive')?.textContent || '0';
+            const difference = document.getElementById('diferenceActive')?.textContent || '0';
+            
+            // Actualizar elementos del modal
+            document.getElementById('modalActiveSymbol').textContent = symbol;
+            document.getElementById('modalActiveName').textContent = name;
+            document.getElementById('modalActivePrice').textContent = currentPrice + '$';
+            document.getElementById('modalActiveObjective').textContent = objective + '$';
+            document.getElementById('modalActiveDescription').textContent = description;
+            
+            // Configurar alerta de diferencia
+            const alertElement = document.getElementById('modalAlertDifference');
+            const differenceElement = document.getElementById('modalActiveDifference');
+            
+            if (parseFloat(difference) <= 0) {
+                alertElement.className = 'alert alert-success';
+                differenceElement.innerHTML = '<i class="fas fa-check-circle me-2"></i>¡Objetivo alcanzado! El precio actual ha superado tu objetivo.';
+            } else {
+                alertElement.className = 'alert alert-info';
+                differenceElement.innerHTML = `<i class="fas fa-info-circle me-2"></i>Faltan ${difference}$ para alcanzar tu objetivo de precio.`;
+            }
+            
+            // Generar datos históricos simulados
+            generateHistoricalData();
+            
+            // Dibujar mini gráfico
+            drawMiniChart();
+        });
+    }
+    
+    // Generar datos históricos simulados para mostrar en el modal
+    function generateHistoricalData() {
+        const container = document.getElementById('modalHistoricalData');
+        const symbol = document.getElementById('nameOfsimbol')?.textContent || '';
+        
+        if (container) {
+            container.innerHTML = '';
+            
+            // Fecha actual
+            const today = new Date();
+            
+            // Generar 5 entradas históricas
+            for (let i = 0; i < 5; i++) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - (i * 30)); // Cada 30 días
+                
+                const formattedDate = date.toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                
+                // Generar precio simulado (decrementar hasta 20% según antigüedad)
+                const currentPrice = parseFloat(document.getElementById('priceActive')?.textContent || '0');
+                const historicalPrice = (currentPrice * (1 - (i * 0.05))).toFixed(2);
+                
+                // Calcular variación (positiva o negativa)
+                const variation = (i % 2 === 0) ? 
+                    `<span class="text-success">+${(Math.random() * 5).toFixed(2)}%</span>` :
+                    `<span class="text-danger">-${(Math.random() * 5).toFixed(2)}%</span>`;
+                
+                // Crear elemento
+                const item = document.createElement('li');
+                item.className = 'list-group-item d-flex justify-content-between align-items-center';
+                item.innerHTML = `
+                    <div>
+                        <strong>${formattedDate}</strong>
+                        <div class="text-muted small">${symbol}</div>
+                    </div>
+                    <div class="text-end">
+                        <div>${historicalPrice}$</div>
+                        <div class="small">${variation}</div>
+                    </div>
+                `;
+                
+                container.appendChild(item);
+            }
+        }
+    }
+    
+    // Dibujar un mini gráfico en el modal (simulado)
+    function drawMiniChart() {
+        const chartContainer = document.getElementById('modalMiniChart');
+        
+        if (chartContainer && typeof echarts !== 'undefined') {
+            const myChart = echarts.init(chartContainer);
+            
+            // Generar datos simulados
+            const dates = [];
+            const prices = [];
+            const today = new Date();
+            
+            for (let i = 4; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                dates.push(date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' }));
+                
+                // Generar precio simulado
+                const currentPrice = parseFloat(document.getElementById('priceActive')?.textContent || '100');
+                const randomVariation = (Math.random() * 6) - 3; // Variación entre -3% y +3%
+                prices.push((currentPrice * (1 + (randomVariation / 100))).toFixed(2));
+            }
+            
+            // Configurar opciones
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: '{b}: {c}$'
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    top: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: dates
+                },
+                yAxis: {
+                    type: 'value',
+                    scale: true
+                },
+                series: [{
+                    data: prices,
+                    type: 'line',
+                    smooth: true,
+                    symbol: 'circle',
+                    symbolSize: 6,
+                    lineStyle: {
+                        color: 'var(--primary-color)',
+                        width: 3
+                    },
+                    itemStyle: {
+                        color: 'var(--primary-color)'
+                    },
+                    areaStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0,
+                                color: 'rgba(46, 125, 50, 0.3)'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(46, 125, 50, 0.05)'
+                            }]
+                        }
+                    }
+                }]
+            };
+            
+            myChart.setOption(option);
+            
+            // Ajustar tamaño si cambia el viewport
+            window.addEventListener('resize', function() {
+                myChart.resize();
+            });
+        }
+    }
+    
+    // Configurar botón para añadir a seguimientos
+    const btnAddToWatchlist = document.getElementById('btnAddToWatchlist');
+    if (btnAddToWatchlist) {
+        btnAddToWatchlist.addEventListener('click', function() {
+            const symbol = document.getElementById('nameOfsimbol')?.textContent || '';
+            const name = document.getElementById('longNameActive')?.textContent || '';
+            
+            // Simular guardado en lista de seguimiento
+            const watchlist = JSON.parse(localStorage.getItem('watchlist') || '[]');
+            
+            // Verificar si ya existe
+            const exists = watchlist.some(item => item.symbol === symbol);
+            
+            if (!exists) {
+                watchlist.push({
+                    symbol: symbol,
+                    name: name,
+                    date: new Date().toISOString()
+                });
+                
+                localStorage.setItem('watchlist', JSON.stringify(watchlist));
+                
+                // Cambiar apariencia del botón
+                this.innerHTML = '<i class="fas fa-check me-2"></i>Añadido a seguimientos';
+                this.classList.remove('finance-btn-success');
+                this.classList.add('btn-success');
+                this.disabled = true;
+                
+                // Mostrar toast
+                showToast(`${name} (${symbol}) añadido a tu lista de seguimiento`, 'success');
+                
+                // Restaurar después de cerrar el modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('infoModal'));
+                modal._element.addEventListener('hidden.bs.modal', function() {
+                    btnAddToWatchlist.innerHTML = '<i class="fas fa-plus me-2"></i>Añadir a seguimientos';
+                    btnAddToWatchlist.classList.add('finance-btn-success');
+                    btnAddToWatchlist.classList.remove('btn-success');
+                    btnAddToWatchlist.disabled = false;
+                }, { once: true });
+            } else {
+                showToast(`${name} (${symbol}) ya está en tu lista de seguimiento`, 'info');
+            }
+        });
+    }
+    
+    // Función para mostrar notificaciones toast (reutilización)
+    function showToast(message, type = 'info') {
+        const toastContainer = document.createElement('div');
+        toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+        
+        const toastClasses = type === 'success' ? 'border-success' : 
+                            type === 'warning' ? 'border-warning' : 
+                            type === 'danger' ? 'border-danger' : 'border-info';
+        
+        const iconClass = type === 'success' ? 'fa-check-circle text-success' : 
+                        type === 'warning' ? 'fa-exclamation-triangle text-warning' : 
+                        type === 'danger' ? 'fa-exclamation-circle text-danger' : 'fa-info-circle text-info';
+        
+        toastContainer.innerHTML = `
+            <div class="toast ${toastClasses}" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <i class="fas ${iconClass} me-2"></i>
+                    <strong class="me-auto">FFinance</strong>
+                    <small>Ahora</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    ${message}
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(toastContainer);
+        const toast = new bootstrap.Toast(toastContainer.querySelector('.toast'));
+        toast.show();
+        
+        // Eliminar después de ocultarse
+        toastContainer.querySelector('.toast').addEventListener('hidden.bs.toast', function() {
+            toastContainer.remove();
+        });
+    }
+});
+</script>

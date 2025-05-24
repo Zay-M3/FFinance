@@ -1,0 +1,371 @@
+{% load static %}
+<form id="activeForm" action="{% url 'home' %}" method="post" class="h-100">
+    {% csrf_token %}
+    <div class="finance-card card h-100 active-card">
+        <div class="card-body d-flex flex-column">
+            <h2 class="card-title mb-3">
+                <i class="fas fa-search text-primary me-2"></i>Buscador de Activos
+            </h2>
+            
+            <div class="alert alert-info mb-3 active-search-info">
+                <i class="fas fa-lightbulb me-2"></i>
+                <small>Selecciona un activo y establece tu precio objetivo para realizar un análisis detallado.</small>
+            </div>
+              <div class="input-group mb-4 position-relative">
+                   <span class="input-group-text bg-primary text-white">
+                       <i class="fas fa-search"></i>
+                   </span>
+                   <select class="form-select" id="symbolInput" name="simbolActive">
+                       <option value="" disabled selected>Buscar activo...</option>
+                       {% for t in tickers %}
+                           <option value="{{ t.symbol }}" {% if simbolActive == t.symbol %}selected{% endif %}>{{ t.symbol }} - {{ t.name }}</option>
+                       {% endfor %}
+                   </select>
+                    <button class="btn btn-outline-primary" type="button" id="btnMoreInfo" data-bs-toggle="tooltip" title="Ver más información">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            
+            <div class="card mb-4 objective-card">
+                <div class="card-header bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-bullseye text-primary me-2"></i>Objetivo de Precio
+                        </h5>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="enableNotifications" checked>
+                            <label class="form-check-label" for="enableNotifications">Notificaciones</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-success text-white">$</span>
+                        <input type="number" class="form-control" name="objetiveActive" id="myInput" 
+                               placeholder="Precio objetivo" value="0" min="0" max="1000000" oninput="updateRangeFromInput(this.value)">
+                        <button class="btn btn-outline-success" type="button" id="suggestPrice">
+                            <i class="fas fa-magic me-1"></i>Sugerir
+                        </button>
+                    </div>
+                    
+                    <div class="range-slider-container mb-3">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <span class="badge bg-light text-dark price-badge">$0</span>
+                            <input type="range" class="form-range" id="customRange1" name="objetiveActive" 
+                                   min="0" max="1000000" value="0" oninput="updateInputFromRange(this.value)">
+                            <span class="badge bg-light text-dark price-badge" id="rangeValue">$0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="price-quick-options d-flex justify-content-between">
+                        <button type="button" class="btn btn-sm btn-outline-secondary quick-price" data-value="10">$10</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary quick-price" data-value="100">$100</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary quick-price" data-value="1000">$1K</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary quick-price" data-value="10000">$10K</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="recentSearches" class="mb-3 d-none">
+                <label class="form-label">Búsquedas recientes:</label>
+                <div class="recent-searches-container" id="recentSearchesContainer">
+                    <!-- Las búsquedas recientes se añadirán aquí mediante JavaScript -->
+                </div>
+            </div>
+
+            <div class="mt-auto">
+                <button id="analyzeBtn" type="submit" class="btn finance-btn finance-btn-success w-100">
+                    <i class="fas fa-chart-line me-2"></i>Analizar
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    // Actualizar input desde el slider
+    function updateInputFromRange(val) {
+        document.getElementById('myInput').value = val;
+        document.getElementById('rangeValue').textContent = val;
+        
+        // Actualizar color del slider según el valor
+        const percent = (val / 1000000) * 100;
+        document.getElementById('customRange1').style.backgroundImage = 
+            `linear-gradient(to right, var(--primary-color) 0%, var(--primary-color) ${percent}%, #ddd ${percent}%, #ddd 100%)`;
+    }
+    
+    // Actualizar slider desde el input
+    function updateRangeFromInput(val) {
+        document.getElementById('customRange1').value = val;
+        document.getElementById('rangeValue').textContent = val;
+        
+        // Actualizar color del slider según el valor
+        const percent = (val / 1000000) * 100;
+        document.getElementById('customRange1').style.backgroundImage = 
+            `linear-gradient(to right, var(--primary-color) 0%, var(--primary-color) ${percent}%, #ddd ${percent}%, #ddd 100%)`;
+    }
+    
+    // Guardar búsquedas recientes en localStorage
+    document.getElementById('analyzeBtn').addEventListener('click', function(e) {
+        const symbol = document.getElementById('symbolInput').value;
+        const price = document.getElementById('myInput').value;
+        
+        if (symbol !== 'Select your active') {
+            // Obtener búsquedas anteriores
+            let searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+            
+            // Añadir nueva búsqueda
+            searches.unshift({
+                symbol: symbol,
+                price: price,
+                date: new Date().toISOString()
+            });
+            
+            // Limitar a 5 búsquedas
+            searches = searches.slice(0, 5);
+            
+            // Guardar en localStorage
+            localStorage.setItem('recentSearches', JSON.stringify(searches));
+        }
+    });
+      // Cargar búsquedas recientes al cargar la página
+    window.addEventListener('DOMContentLoaded', function() {
+        const searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+        const container = document.getElementById('recentSearchesContainer');
+        
+        if (searches.length > 0) {
+            document.getElementById('recentSearches').classList.remove('d-none');
+            container.innerHTML = '';
+            
+            searches.forEach(search => {
+                const date = new Date(search.date);
+                const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                
+                const searchElement = document.createElement('div');
+                searchElement.className = 'recent-search-item';
+                searchElement.innerHTML = `
+                    <button type="button" class="btn btn-sm btn-outline-secondary mb-1 me-1" 
+                            onclick="loadSearch('${search.symbol}', ${search.price})">
+                        ${search.symbol} - $${search.price}
+                        <small class="text-muted">(${formattedDate})</small>
+                    </button>
+                `;
+                container.appendChild(searchElement);
+            });
+        }
+        
+        // Inicializar el slider con el color correcto
+        updateRangeFromInput(document.getElementById('myInput').value);
+        
+        // Inicializar tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Configurar botones de precio rápido
+        document.querySelectorAll('.quick-price').forEach(button => {
+            button.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                document.getElementById('myInput').value = value;
+                updateRangeFromInput(value);
+            });
+        });
+        
+        // Configurar botón de sugerencia de precio
+        document.getElementById('suggestPrice').addEventListener('click', function() {
+            const symbol = document.getElementById('symbolInput').value;
+            if (symbol === 'Select your active') {
+                showToast('Por favor, selecciona un activo primero', 'warning');
+                return;
+            }
+            
+            // Simular carga
+            this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Calculando...';
+            this.disabled = true;
+            
+            // Simular proceso de sugerencia (en una aplicación real, esto haría una llamada al backend)
+            setTimeout(() => {
+                // Generar un precio sugerido basado en el símbolo
+                let suggestedPrice = 0;
+                
+                if (symbol.includes('BTC')) {
+                    suggestedPrice = Math.floor(30000 + Math.random() * 5000);
+                } else if (symbol.includes('ETH')) {
+                    suggestedPrice = Math.floor(2000 + Math.random() * 500);
+                } else if (['AAPL', 'MSFT', 'GOOG', 'AMZN', 'META'].includes(symbol)) {
+                    suggestedPrice = Math.floor(100 + Math.random() * 200);
+                } else if (symbol === 'TSLA') {
+                    suggestedPrice = Math.floor(150 + Math.random() * 100);
+                } else {
+                    suggestedPrice = Math.floor(10 + Math.random() * 90);
+                }
+                
+                // Actualizar el input y el slider
+                document.getElementById('myInput').value = suggestedPrice;
+                updateRangeFromInput(suggestedPrice);
+                
+                // Restaurar el botón
+                this.innerHTML = '<i class="fas fa-magic me-1"></i>Sugerir';
+                this.disabled = false;
+                
+                // Mostrar toast de confirmación
+                showToast(`Precio sugerido para ${symbol}: $${suggestedPrice}`, 'success');
+            }, 1000);
+        });
+    });
+      
+    // Cargar una búsqueda anterior
+    function loadSearch(symbol, price) {
+        document.getElementById('symbolInput').value = symbol;
+        document.getElementById('myInput').value = price;
+        updateRangeFromInput(price);
+        
+        // Mostrar un toast de confirmación
+        showToast(`Se ha cargado ${symbol} con objetivo de $${price}`, 'info');
+    }
+    
+    // Función para mostrar notificaciones toast
+    function showToast(message, type = 'info') {
+        const toastContainer = document.createElement('div');
+        toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+        
+        const toastClasses = type === 'success' ? 'border-success' : 
+                            type === 'warning' ? 'border-warning' : 
+                            type === 'danger' ? 'border-danger' : 'border-info';
+        
+        const iconClass = type === 'success' ? 'fa-check-circle text-success' : 
+                        type === 'warning' ? 'fa-exclamation-triangle text-warning' : 
+                        type === 'danger' ? 'fa-exclamation-circle text-danger' : 'fa-info-circle text-info';
+        
+        toastContainer.innerHTML = `
+            <div class="toast ${toastClasses}" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <i class="fas ${iconClass} me-2"></i>
+                    <strong class="me-auto">FFinance</strong>
+                    <small>Ahora</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    ${message}
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(toastContainer);
+        const toast = new bootstrap.Toast(toastContainer.querySelector('.toast'));
+        toast.show();
+        
+        // Eliminar después de ocultarse
+        toastContainer.querySelector('.toast').addEventListener('hidden.bs.toast', function() {
+            toastContainer.remove();
+        });
+    }
+    
+    // Mostrar/ocultar contenedor de tickers
+    document.getElementById('symbolInput').addEventListener('input', function() {
+        const value = this.value.trim();
+        const container = document.getElementById('tickersContainer');
+        
+        if (value.length > 0) {
+            // Filtrar tickers
+            const filteredTickers = Array.from(document.querySelectorAll('.ticker-item')).filter(item => {
+                return item.getAttribute('data-symbol').toLowerCase().includes(value.toLowerCase());
+            });
+            
+            // Mostrar u ocultar según el filtro
+            if (filteredTickers.length > 0) {
+                container.classList.remove('d-none');
+                filteredTickers.forEach(item => item.classList.remove('d-none'));
+                document.querySelectorAll('.ticker-item').forEach(item => {
+                    if (!filteredTickers.includes(item)) {
+                        item.classList.add('d-none');
+                    }
+                });
+            } else {
+                container.classList.add('d-none');
+            }
+        } else {
+            container.classList.add('d-none');
+        }
+    });
+    
+    // Seleccionar ticker de la lista
+    document.getElementById('tickersContainer').addEventListener('click', function(e) {
+        if (e.target.classList.contains('ticker-item')) {
+            const symbol = e.target.getAttribute('data-symbol');
+            document.getElementById('symbolInput').value = symbol;
+            document.getElementById('tickersContainer').classList.add('d-none');
+            
+            // Mostrar un toast de confirmación
+            showToast(`Ticker seleccionado: ${symbol}`, 'info');
+        }
+    });
+</script>
+
+<style>
+    .range-slider-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .form-range {
+        margin: 0 10px;
+        flex-grow: 1;
+        height: 8px;
+    }
+    
+    .form-range::-webkit-slider-thumb {
+        background-color: var(--primary-color);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: all 0.2s;
+    }
+    
+    .form-range::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+    }
+    
+    .price-badge {
+        min-width: 60px;
+        text-align: center;
+        font-weight: 500;
+        border: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    .recent-search-item {
+        display: inline-block;
+    }
+    
+    .price-quick-options {
+        margin-top: 15px;
+    }
+    
+    .quick-price {
+        transition: all 0.2s;
+    }
+    
+    .quick-price:hover {
+        transform: translateY(-2px);
+    }
+    
+    .objective-card {
+        border-left: 4px solid var(--primary-color);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    .objective-card .card-header {
+        background-color: rgba(46, 125, 50, 0.05);
+    }
+    
+    /* Animación para el botón de sugerir */
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(46, 125, 50, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+    }
+    
+    #suggestPrice:active {
+        animation: pulse 0.5s;
+    }
+</style>
