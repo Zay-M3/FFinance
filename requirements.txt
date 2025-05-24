@@ -1,20 +1,25 @@
-# Paquetes esenciales de Django
+# Core Django dependencies
 Django==5.1.6
 asgiref==3.8.1
 sqlparse==0.5.3
-python-dotenv==1.0.1  # Para variables de entorno
+python-dotenv==1.0.1
 
-# Base de datos (PostgreSQL para Railway)
-psycopg2-binary==2.9.9  # Añade esta línea si usas PostgreSQL
-
-# Servidor para producción
+# Production server
 gunicorn==23.0.0
-
-
-
-# Dependencias de tu proyecto
-requests==2.32.3
-pandas==2.2.3
-yfinance==0.2.54
-numpy==2.2.3  # Requerido por pandas
 whitenoise==6.9.0
+
+# Database (uncomment if you're using PostgreSQL)
+# psycopg2-binary==2.9.9
+
+# Data processing
+pandas==2.2.3
+numpy==2.2.3
+yfinance==0.2.61
+requests==2.32.3
+
+# For HTML parsing (fixes the missing lxml error)
+lxml==5.1.0
+
+# For rate limiting support
+requests-cache==0.9.8
+requests-ratelimiter==0.4.0
