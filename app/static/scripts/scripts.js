@@ -1,19 +1,15 @@
-//for the graphi for echearts
 
     const getOptionChart = async(url) => {
-        // Obtener símbolo activo desde el selector de activos
+        
         const inputEl = document.getElementById('symbolInput');
         const activeRoll = inputEl ? inputEl.value.trim() : '';
 
         if (!activeRoll) {
-            console.warn('No se seleccionó un activo válido.');
-            // Mostrar mensaje de no data
             const chartNoData = document.getElementById('chartNoData');
             if (chartNoData) chartNoData.classList.remove('d-none');
             return null;
         }
         try {
-            console.log(`Enviando petición a ${url} con símbolo: ${activeRoll}`);
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
@@ -21,10 +17,8 @@
             });
             if (!response.ok) throw new Error(`Error en la respuesta del backend: ${response.statusText}`);
             const data = await response.json();
-            console.log('Datos recibidos del backend:', data);
             return data;
         } catch (ex) {
-            console.error('Error en getOptionChart:', ex);
             const chartNoData = document.getElementById('chartNoData');
             if (chartNoData) chartNoData.classList.remove('d-none');
             return null;
@@ -38,39 +32,32 @@
             const url1 = `${baseUrl}/get_char/`;
             const url2 = `${baseUrl}/get_char2/`;
 
-            console.log('Inicializando gráficas...');
             const chartData = await getOptionChart(url1);
             const chartData2 = await getOptionChart(url2);
 
-            if (!chartData) {
-                console.warn('No se recibieron datos para la gráfica principal.');
+            if (!chartData) {return
             }
-            if (!chartData2) {
-                console.warn('No se recibieron datos para la gráfica histórica.');
+            if (!chartData2) {return
             }
 
             const chartDiv = document.getElementById('chart');
             const chartNoData = document.getElementById('chartNoData');
             if (!chartDiv) {
-                console.error('No se encontró el contenedor de la gráfica principal.');
                 return;
             }
 
             if (!chartData || !chartData.series || chartData.series.length === 0) {
-                console.warn('No se recibieron datos válidos para la gráfica principal.');
                 if (chartNoData) chartNoData.classList.remove('d-none');
                 chartDiv.innerHTML = '';
                 return;
             } else {
                 if (chartNoData) chartNoData.classList.add('d-none');
             }
-
-            console.log('Inicializando gráfica principal con datos:', chartData);
-            // Limpiar el div antes de inicializar
+           
             chartDiv.innerHTML = '';
             const myChart = echarts.init(chartDiv);
             
-            // Estilos personalizados para la gráfica principal
+            
             chartData.color = [getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim() || '#2e7d32'];
             chartData.grid = { top: '12%', left: '6%', right: '6%', bottom: '12%' };
             chartData.tooltip = { trigger: 'axis', backgroundColor: 'rgba(0, 0, 0, 0.7)', textStyle: { color: '#fff' } };
@@ -94,7 +81,6 @@
                     ])
                 }
             }));
-            // DataZoom y estilo de ejes
             chartData.dataZoom = [
                 { type: 'inside', xAxisIndex: 0, start: 60, end: 100 },
                 { type: 'slider', xAxisIndex: 0, bottom: '3%', height: '10%', start: 60, end: 100 }
@@ -109,7 +95,6 @@
             // Para el chart2 (histórico)
             const chart2Div = document.getElementById('chart2');
             if (chart2Div && chartData2 && chartData2.series && chartData2.series.length > 0) {
-                console.log('Inicializando gráfica histórica con datos:', chartData2);
                 chart2Div.innerHTML = '';
                 const myChart2 = echarts.init(chart2Div);
                 
@@ -156,14 +141,11 @@
     window.addEventListener("load", async() => {
         initChart()
         
-        // Inicializar el header fijo
         initStickyHeader();
         
-        // Configurar el botón de más información
         setupInfoModal();
     })
 
-    // Función para hacer el header fijo durante scroll
     function initStickyHeader() {
         const header = document.querySelector('header');
         
@@ -180,14 +162,12 @@
         });
     }
 
-    // Función para configurar el modal de información
     function setupInfoModal() {
         const btnMoreInfo = document.getElementById('btnMoreInfo');
         
         if (!btnMoreInfo) return;
         
         btnMoreInfo.addEventListener('click', function() {
-            // Obtener información del activo actual
             const inputEl = document.getElementById('symbolInput');
             const activeSymbol = inputEl ? inputEl.value.trim() : '';
             
@@ -196,10 +176,8 @@
                 return;
             }
             
-            // Actualizar el modal con la información del activo
             document.getElementById('modalActiveSymbol').textContent = activeSymbol;
             
-            // Si hay más información disponible, actualizar los campos
             const activeName = document.getElementById('longNameActive');
             if (activeName) {
                 document.getElementById('modalActiveName').textContent = activeName.textContent;
@@ -237,16 +215,12 @@
                 document.getElementById('modalActiveDescription').textContent = activeDescription.textContent;
             }
             
-            // Mostrar el modal
             const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
             infoModal.show();
             
-            // Crear mini gráfico en el modal
             createModalMiniChart(activeSymbol);
         });
     }
-
-    // Función para crear un mini gráfico en el modal
     async function createModalMiniChart(symbol) {
         const chartContainer = document.getElementById('modalMiniChart');
         
@@ -288,7 +262,6 @@
             generateHistoricalData(symbol);
             
         } catch (error) {
-            console.error('Error creando el mini gráfico:', error);
             chartContainer.innerHTML = '<div class="alert alert-warning">No se pudo cargar el gráfico</div>';
         }
     }
@@ -403,12 +376,9 @@
                     document.getElementById('priceActive').textContent : '';
                 const objective = document.getElementById('objetiveActive') ? 
                     document.getElementById('objetiveActive').textContent : '';
-                
-                // Crear el texto para compartir
+ 
                 const shareText = `¡Estoy siguiendo ${symbol} en FFinance! Precio actual: $${price}, Objetivo: $${objective}`;
-                
-                // Simulamos la funcionalidad de compartir
-                // Creamos un elemento de texto temporal
+           
                 const textarea = document.createElement('textarea');
                 textarea.value = shareText;
                 textarea.style.position = 'fixed';
@@ -429,7 +399,6 @@
         }
     }
     
-    // Configuración del botón de celebrar
     function setupCelebrateButton() {
         const celebrateButton = document.getElementById('celebrateButton');
         if (celebrateButton) {
