@@ -1,10 +1,10 @@
-{% load static %}
+
 /* Estilos principales para FFinance */
 :root {
-  --primary-color: {{ primary_color|default:"#2e7d32" }};
-  --primary-light: {{ primary_light|default:"#60ad5e" }};
-  --primary-dark: {{ primary_dark|default:"#005005" }};
-  --secondary-color: {{ secondary_color|default:"#424242" }};
+  --primary-color: #2e7d32;
+  --primary-light: #60ad5e;
+  --primary-dark: #005005;
+  --secondary-color: #424242;
   --text-light: #fafafa;
   --text-dark: #212121;
   --success-color: #4caf50;

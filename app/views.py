@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.views import View
 from .forms import actives_ffinance
 import yfinance as yh
-import requests  
 from dataclasses import dataclass
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
